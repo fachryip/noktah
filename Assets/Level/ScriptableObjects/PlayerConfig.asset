@@ -15,3 +15,4 @@ MonoBehaviour:
   MoveSpeed: 3.5
   JumpForce: 5.5
   MaxSlopeDegree: 60
+  JumpFrameDelay: 20

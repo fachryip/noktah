@@ -11,14 +11,20 @@ namespace Noktah
         private Vector2 _velocity;
         private bool _isJump;
         private ContactPoint2D _contact;
+        [SerializeField] private DelayData _jumpDelay;
+
+        private void Start()
+        {
+            _jumpDelay = new DelayData(EnumPlayerDelay.Jump, Model.Config.JumpFrameDelay, () => Model.IsGrounded, () => _isJump = true);
+        }
 
         private void Update()
         {
             if (Input.GetButtonDown(ConstInput.FIRE1) && !_isJump)
             {
-                if (Model.IsGrounded)
+                if (!_jumpDelay.IsActive)
                 {
-                    _isJump = true;
+                    _jumpDelay.SetActive();
                 }
             }
         }
@@ -28,6 +34,11 @@ namespace Noktah
             if (Mathf.Abs(Model.Rigidbody.velocity.x) != Model.Config.MoveSpeed)
             {
                 _velocity.x = (Model.Rigidbody.velocity.x < 0 ? -1 : 1) * Model.Config.MoveSpeed;
+            }
+
+            if (_jumpDelay.IsActive)
+            {
+                _jumpDelay.Update();
             }
 
             if (_isJump)
@@ -68,6 +79,50 @@ namespace Noktah
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(Model.transform.position, Model.transform.position - Model.transform.up);
+            }
+        }
+
+        [System.Serializable]
+        public struct DelayData
+        {
+            public EnumPlayerDelay Type;
+            public int MaxFrame;
+            public System.Func<bool> Checker;
+            public System.Action Callback;
+            public int Frame;
+
+            public bool IsActive;
+
+            public DelayData(EnumPlayerDelay type, int maxFrame, System.Func<bool> checker, System.Action callback)
+            {
+                Type = type;
+                MaxFrame = maxFrame;
+                Checker = checker;
+                Callback = callback;
+                Frame = 0;
+                IsActive = false;
+            }
+
+            public void Update()
+            {
+                if (++Frame <= MaxFrame)
+                {
+                    if (Checker())
+                    {
+                        Callback();
+                        IsActive = false;
+                    }
+                }
+                else
+                {
+                    IsActive = false;
+                }
+            }
+
+            public void SetActive()
+            {
+                IsActive = true;
+                Frame = 0;
             }
         }
     }
