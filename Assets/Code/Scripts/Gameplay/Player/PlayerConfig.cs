@@ -6,11 +6,15 @@ namespace Noktah
     [CreateAssetMenu(fileName = "PlayerConfig", menuName = "ScriptableObjects/PlayerConfig", order = 1)]
     public class PlayerConfig : ScriptableObject
     {
-        public float Speed;
+        public float MoveSpeed;
+        public float JumpForce;
+        public float MaxSlopeDegree;
 
         public void Reset()
         {
-            Speed = 3.5f;
+            MoveSpeed = 3.5f;
+            JumpForce = 5.5f;
+            MaxSlopeDegree = 60f;
         }
     }
 }
