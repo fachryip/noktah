@@ -31,6 +31,52 @@ namespace Noktah
 
         private void FixedUpdate()
         {
+            if (Model.CanMove)
+            {
+                Move();
+            }
+            else
+            {
+                Model.Rigidbody.velocity = Vector2.zero;
+                Model.Rigidbody.angularVelocity = 0f;
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag(ConstTag.KILLER))
+            {
+                StartCoroutine(DieSequence());
+            }
+            else
+            {
+                _contact = collision.GetContact(0);
+                var angle = Vector2.Angle(-Vector2.up, _contact.point - (Vector2)Model.transform.position);
+
+                if (angle <= Model.Config.MaxSlopeDegree)
+                {
+                    if (!_touchingColliders.Contains(collision.collider))
+                    {
+                        Model.IsGrounded = true;
+                        _isGroundedDelay.SetActive(false);
+                        _touchingColliders.Add(collision.collider);
+                    }
+                }
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            _touchingColliders.Remove(collision.collider);
+            if (_touchingColliders.Count == 0 && Model.IsGrounded)
+            {
+                _isGroundedDelay.SetActive(true);
+            }
+            //Model.IsGrounded = _touchingColliders.Count > 0;
+        }
+
+        private void Move()
+        {
             if (Mathf.Abs(Model.Rigidbody.velocity.x) != Model.Config.MoveSpeed)
             {
                 _velocity.x = (Model.Rigidbody.velocity.x < 0 ? -1 : 1) * Model.Config.MoveSpeed;
@@ -54,43 +100,24 @@ namespace Noktah
             Model.Rigidbody.velocity = _velocity;
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private IEnumerator DieSequence()
         {
-            _contact = collision.GetContact(0);
-            var angle = Vector2.Angle(-Vector2.up, _contact.point - (Vector2)Model.transform.position);
-
-            if (angle <= Model.Config.MaxSlopeDegree)
+            if (!Model.IsDie)
             {
-                if (!_touchingColliders.Contains(collision.collider))
-                {
-                    Model.IsGrounded = true;
-                    _isGroundedDelay.SetActive(false);
-                    _touchingColliders.Add(collision.collider);
-                }
-            }
-        }
+                Model.IsDie = true;
+                Model.CanMove = false;
+                Model.View.SetVisibility(false);
+                yield return null;
 
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            _touchingColliders.Remove(collision.collider);
-            if (_touchingColliders.Count == 0 && Model.IsGrounded)
-            {
-                _isGroundedDelay.SetActive(true);
-            }
-            //Model.IsGrounded = _touchingColliders.Count > 0;
-        }
+                GameplayModel.Singleton.Transition.SetFade();
+                yield return null;
 
-        private void JumpDelayUpdate()
-        {
-            
-        }
+                Model.transform.position = GameplayModel.Singleton.Stage.RespawnLocation.position;
+                yield return new WaitForSeconds(1f);
 
-        private void OnDrawGizmos()
-        {
-            if (Model.IsGrounded)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(Model.transform.position, Model.transform.position - Model.transform.up);
+                Model.View.SetVisibility(true);
+                Model.IsDie = false;
+                Model.CanMove = true;
             }
         }
     }
