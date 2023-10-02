@@ -1,6 +1,6 @@
 ﻿namespace Noktah
 {
-    public enum EnumPlayerDelay
+    public enum DelayType
     {
         Jump,
         IsGround

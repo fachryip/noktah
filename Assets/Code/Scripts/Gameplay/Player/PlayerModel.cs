@@ -10,13 +10,7 @@ namespace Noktah
         public PlayerController Controller;
         public Rigidbody2D Rigidbody;
 
-        public List<Collider2D> TouchingColliders;
-
-        public bool IsGrounded => TouchingColliders.Count > 0;
-
-        private void Start()
-        {
-            TouchingColliders = new List<Collider2D>();
-        }
+        public bool IsGrounded { get; set; }
+        public bool IsJump { get; set; }
     }
 }
