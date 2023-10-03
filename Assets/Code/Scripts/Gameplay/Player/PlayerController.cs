@@ -113,7 +113,7 @@ namespace Noktah
                 yield return null;
 
                 Model.transform.position = GameplayModel.Singleton.Stage.RespawnLocation.position;
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(Model.Config.DieDelay);
 
                 Model.View.SetVisibility(true);
                 Model.IsDie = false;

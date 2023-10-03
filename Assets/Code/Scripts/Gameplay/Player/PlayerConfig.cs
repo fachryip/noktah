@@ -11,6 +11,7 @@ namespace Noktah
         public float MaxSlopeDegree;
         public int JumpFrameDelay;
         public int IsGroundedFrameDelay;
+        public float DieDelay;
 
         public void Reset()
         {
@@ -19,6 +20,7 @@ namespace Noktah
             MaxSlopeDegree = 60f;
             JumpFrameDelay = 20;
             IsGroundedFrameDelay = 10;
+            DieDelay = 0.9f;
         }
     }
 }

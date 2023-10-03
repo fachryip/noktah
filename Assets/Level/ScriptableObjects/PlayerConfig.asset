@@ -17,3 +17,4 @@ MonoBehaviour:
   MaxSlopeDegree: 60
   JumpFrameDelay: 20
   IsGroundedFrameDelay: 10
+  DieDelay: 0.9
