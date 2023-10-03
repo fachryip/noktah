@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Noktah
+namespace Core
 {
-    public abstract class AbstractSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class SingletonInScene<T> : MonoBehaviour where T : MonoBehaviour
     {
         public static T Singleton;
 

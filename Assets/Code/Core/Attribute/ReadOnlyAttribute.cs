@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Noktah
+namespace Core
 {
     public class ReadOnlyAttribute : PropertyAttribute
     {

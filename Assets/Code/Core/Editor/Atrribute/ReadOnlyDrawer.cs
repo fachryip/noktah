@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Noktah
+namespace Core
 {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyDrawer : PropertyDrawer
