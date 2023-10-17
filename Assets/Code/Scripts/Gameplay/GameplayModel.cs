@@ -8,6 +8,7 @@ namespace Noktah
     {
         public ScreenTransition Transition;
         public AdditiveSceneLoader SceneLoader;
+        public StageConfig StageConfig;
 
         [ReadOnly] public StageModel Stage;
         [ReadOnly] public PlayerModel Player;
