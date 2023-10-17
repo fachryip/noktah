@@ -10,7 +10,8 @@ namespace Noktah
 
         protected override void OnAwake()
         {
-            CurrentStage = new StageData(0, 0);
+            var stageConfig = GameplayModel.Singleton.StageConfig;
+            CurrentStage = new StageData(stageConfig.Theme, stageConfig.Level);
         }
     }
 }
