@@ -535,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transition: {fileID: 440335021}
   SceneLoader: {fileID: 1318954948}
+  StageConfig: {fileID: 11400000, guid: 97d3b35b32f3bf54084a583584a5619b, type: 2}
   Stage: {fileID: 0}
   Player: {fileID: 0}
 --- !u!4 &1318954947
